@@ -1,0 +1,33 @@
+{
+    "manifest_version": 3,
+    "name": "FormFlow",
+    "version": "1.0",
+    "description": "Form tracking and auto-filling extension",
+    "permissions": [
+        "storage",
+        "activeTab",
+        "identity"
+    ],
+    "oauth2": {
+        "client_id": "${YOUR_CLIENT_ID}",
+        "scopes": [
+            "https://www.googleapis.com/auth/drive.file"
+        ]
+    },
+    "action": {
+        "default_popup": "src/popup/popup.html"
+    },
+    "background": {
+        "service_worker": "src/background/background.js"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "src/content/content.js"
+            ]
+        }
+    ]
+}

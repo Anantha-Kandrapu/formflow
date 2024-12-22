@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>FormFlow</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>FormFlow</h1>
+
+        <!-- Mode Switch -->
+        <div class="mode-switch">
+            <label class="switch">
+                <input type="checkbox" id="modeToggle">
+                <span class="slider round"></span>
+            </label>
+            <span id="modeText">Tracking Mode</span>
+        </div>
+
+        <!-- Google Drive Settings -->
+        <div class="settings-section">
+            <h2>Google Drive Settings</h2>
+            <div class="input-group">
+                <input type="text" id="clientId" placeholder="Enter Google Client ID">
+                <button id="saveClientId">Save</button>
+            </div>
+            <div class="connection-status">
+                Status: <span id="driveStatus">Not Connected</span>
+            </div>
+            <button id="testConnection" style="display: none;">Test Connection</button>
+        </div>
+
+        <div class="status">
+            <p>Status: <span id="statusText">Active</span></p>
+        </div>
+    </div>
+    <script src="popup.js"></script>
+</body>
+
+</html>
