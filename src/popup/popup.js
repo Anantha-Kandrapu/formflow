@@ -1,42 +1,62 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const modeToggle = document.getElementById('modeToggle');
+    const folderNameInput = document.getElementById('folderName');
+    const fileNameInput = document.getElementById('fileName');
+    const saveToFolderButton = document.getElementById('saveToFolder');
+    const trackedFieldsList = document.getElementById('trackedFieldsList');
+    
+    chrome.storage.local.get(['folderName', 'fileName'], function (result) {
+        if (result.folderName) folderNameInput.value = result.folderName;
+        if (result.fileName) fileNameInput.value = result.fileName;
+    });
+    folderNameInput.addEventListener('input', function () {
+        chrome.storage.local.set({ folderName: this.value });
+    });
+
+    fileNameInput.addEventListener('input', function () {
+        chrome.storage.local.set({ fileName: this.value });
+    });
+
+    saveToFolderButton.addEventListener('click', async () => {
+        const folderName = folderNameInput.value;
+        const fileName = fileNameInput.value;
+        if (!folderName || !fileName) {
+            alert('Please enter both folder name and file name');
+            return;
+        }
+        console.log('💾 Attempting to save tracked fields:', {
+            folder: folderName,
+            file: fileName
+        });
+        chrome.runtime.sendMessage({
+            action: 'manualSync',
+            folderName: folderName,
+            fileName: fileName
+        }, (response) => {
+            if (response.success) {
+                console.log('✅ Successfully saved to Drive');
+            } else {
+                console.error('❌ Failed to save:', response.error);
+            }
+        });
+    });
+    function updateTrackedFieldsList(fields) {
+        trackedFieldsList.innerHTML = fields.map(field => `
+            <div class="tracked-field">
+                <span>${field.type}: ${field.value}</span>
+            </div>
+        `).join('');
+    }
+    document.getElementById('modeToggle').addEventListener('change', (e) => {
+        const newMode = e.target.checked ? 'execution' : 'tracking';
+        chrome.runtime.sendMessage({
+            action: 'modeChange',
+            mode: newMode
+        });
+    });
+
     const modeText = document.getElementById('modeText');
-    const statusText = document.getElementById('statusText');
-    const clientIdInput = document.getElementById('clientId');
-    const saveClientIdBtn = document.getElementById('saveClientId');
     const driveStatus = document.getElementById('driveStatus');
     const testConnectionBtn = document.getElementById('testConnection');
-
-    // Load saved client ID
-    chrome.storage.local.get(['googleClientId'], function (result) {
-        if (result.googleClientId) {
-            clientIdInput.value = result.googleClientId;
-            testConnectionBtn.style.display = 'block';
-            updateDriveStatus('Configured');
-        }
-    });
-
-    // Save Client ID
-    saveClientIdBtn.addEventListener('click', function () {
-        const clientId = clientIdInput.value.trim();
-
-        if (clientId) {
-            chrome.storage.local.set({
-                googleClientId: clientId
-            }, function () {
-                updateDriveStatus('Configured');
-                testConnectionBtn.style.display = 'block';
-
-                // Notify background script about new client ID
-                chrome.runtime.sendMessage({
-                    action: 'updateClientId',
-                    clientId: clientId
-                });
-            });
-        }
-    });
-
-    // Test Connection
     testConnectionBtn.addEventListener('click', function () {
         chrome.runtime.sendMessage({
             action: 'testDriveConnection'
@@ -48,39 +68,28 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
-
     function updateDriveStatus(status) {
         driveStatus.textContent = status;
         driveStatus.className = status.toLowerCase().includes('connected')
             ? 'connected'
             : 'not-connected';
     }
-
-    // Load initial state
     chrome.storage.local.get(['mode'], function (result) {
         const currentMode = result.mode || 'tracking';
         modeToggle.checked = currentMode === 'execution';
         updateModeText(currentMode);
     });
-
-    // Handle mode toggle
     modeToggle.addEventListener('change', function () {
         const newMode = this.checked ? 'execution' : 'tracking';
-
-        // Save mode to storage
         chrome.storage.local.set({ mode: newMode }, function () {
             updateModeText(newMode);
-
-            // Notify background script
             chrome.runtime.sendMessage({
                 action: 'modeChange',
                 mode: newMode
             });
         });
     });
-
     function updateModeText(mode) {
         modeText.textContent = mode === 'execution' ? 'Execution Mode' : 'Tracking Mode';
-        statusText.textContent = 'Active';
     }
 });

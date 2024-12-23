@@ -46,7 +46,7 @@ A browser extension designed to track form filling patterns and automatically fi
   - Form patterns
   - Field mappings
   - User preferences
-  - Multiple profiles
+  - Multiple folderNames
 - Data versioning
 - Import/Export functionality
 
@@ -73,7 +73,7 @@ A browser extension designed to track form filling patterns and automatically fi
 ### 4.2 Configuration
 - Field mapping customization
 - Pattern management
-- Profile selection
+- folderName selection
 - Import/Export controls
 
 ### 4.3 Feedback System
@@ -113,7 +113,7 @@ A browser extension designed to track form filling patterns and automatically fi
 ### 7.1 Features
 - AI-powered field matching
 - Form pattern learning
-- Multiple profile support
+- Multiple folderName support
 - Cloud sync capabilities
 
 ### 7.2 Integration
@@ -136,7 +136,7 @@ A browser extension designed to track form filling patterns and automatically fi
 - Storage optimization
 
 ### Phase 3: Advanced Features
-- Multiple profiles
+- Multiple folderNames
 - Pattern learning
 - Firefox support
 - Extended configuration

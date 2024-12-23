@@ -135,3 +135,12 @@ input:checked+.slider:before {
 #driveStatus.not-connected {
     color: #F44336;
 }
+
+.button {
+    padding: 8px 15px;
+    background: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}

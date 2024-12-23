@@ -19,22 +19,27 @@
             <span id="modeText">Tracking Mode</span>
         </div>
 
-        <!-- Google Drive Settings -->
+        <!-- Storage Status -->
         <div class="settings-section">
-            <h2>Google Drive Settings</h2>
-            <div class="input-group">
-                <input type="text" id="clientId" placeholder="Enter Google Client ID">
-                <button id="saveClientId">Save</button>
-            </div>
+            <h2>Storage</h2>
             <div class="connection-status">
-                Status: <span id="driveStatus">Not Connected</span>
+                <button id="testConnection">Connect</button>
+                Status: <span id="driveStatus">Get connection status</span>
             </div>
-            <button id="testConnection" style="display: none;">Test Connection</button>
+        </div>
+        
+        <div class="tracked-fields-section">
+            <h2>Tracked Fields</h2>
+            <div id="trackedFieldsList"></div>
+            <div class="save-folder">
+                <input type="text" id="folderName" placeholder="Enter folder name">
+                <input type="text" id="fileName" placeholder="Enter file name">
+                <button id="saveToFolder">Sync to Drive</button>
+            </div>
         </div>
 
-        <div class="status">
-            <p>Status: <span id="statusText">Active</span></p>
-        </div>
+
+
     </div>
     <script src="popup.js"></script>
 </body>
